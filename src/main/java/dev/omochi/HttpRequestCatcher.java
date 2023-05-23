@@ -109,11 +109,13 @@ public class HttpRequestCatcher {
                 ReadLine.append(c);
             }
             ReadLine.append("\n");
+
+            body.append(ReadLine);
+
             if(!in.ready()){
                 break;
             }
             in.readLine();//改行は飛ばす
-            body.append(ReadLine);
         }
         return body.toString();
     }

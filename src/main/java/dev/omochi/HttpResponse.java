@@ -46,6 +46,7 @@ public class HttpResponse{
         StringBuilder HeaderText=new StringBuilder();
 
         this.header.put("Content-Length",Integer.toString(body.getBytes().length));
+        this.header.remove("Transfer-Encoding");
         for(String key:this.header.keySet()){
             if(key.equals("request")) {
                 HeaderText.append(this.header.get(key)).append(CRLF);
@@ -108,23 +109,26 @@ public class HttpResponse{
         long ChunkSize;
         String line;
         StringBuilder ReadLine;
-        while(true){
-            ChunkSize=Long.parseLong(in.readLine(), 16);
-            ReadLine=new StringBuilder();
-            while(ReadLine.toString().getBytes("UTF-8").length==ChunkSize){
+        while(true) {
+            ChunkSize = Long.parseLong(in.readLine(), 16);
+            ReadLine = new StringBuilder();
+            while (ReadLine.toString().getBytes("UTF-8").length != ChunkSize) {
                 char c;
-                if(!in.ready()){
+                if (!in.ready()) {
                     break;
                 }
-                c=(char)in.read();
+                c = (char) in.read();
                 ReadLine.append(c);
             }
             ReadLine.append("\n");
-            if(!in.ready()){
+
+
+            body.append(ReadLine);
+            in.readLine();//改行は飛ばす
+            if (!in.ready()) {
                 break;
             }
-            in.readLine();//改行は飛ばす
-            body.append(ReadLine);
+
         }
         return body.toString();
     }

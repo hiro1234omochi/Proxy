@@ -45,32 +45,11 @@ public class Proxy implements Runnable{
 
                     try (
 
-                            Socket socket1 = httpRequestCatcher.getToServerURl().contains("https://") ? new Socket(httpRequestCatcher.getToServerDomain(), 80) : SSLSocketFactory.getDefault().createSocket(httpRequestCatcher.getToServerDomain(), 443);
+                            Socket socket1 = httpRequestCatcher.getToServerURl().startsWith("https://") ? SSLSocketFactory.getDefault().createSocket(httpRequestCatcher.getToServerDomain(), 443) : new Socket(httpRequestCatcher.getToServerDomain(), 80);
 
                             BufferedReader reader = new BufferedReader(new InputStreamReader(socket1.getInputStream(), "UTF-8"));
                             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket1.getOutputStream()));
                     ) {
-
-                        writer.write("GET / HTTP/1.1\r\n" +
-                                "Host: knowledge.sakura.ad.jp/\r\n" +
-                                "Connection: keep-alive\r\n" +
-                                "Pragma: no-cache\r\n" +
-                                "Cache-Control: no-cache\r\n" +
-                                "sec-ch-ua: \"Google Chrome\";v=\"113\", \"Chromium\";v=\"113\", \"Not-A.Brand\";v=\"24\"\r\n" +
-                                "sec-ch-ua-mobile: ?0\r\n" +
-                                "sec-ch-ua-platform: \"Windows\"\r\n" +
-                                "Upgrade-Insecure-Requests: 1\r\n" +
-                                "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36\r\n" +
-                                "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,;q=0.8,application/signed-exchange;v=b3;q=0.7\r\n" +
-                                "Sec-Fetch-Site: none\r\n" +
-                                "Sec-Fetch-Mode: navigate\r\n" +
-                                "Sec-Fetch-User: ?1\r\n" +
-                                "Sec-Fetch-Dest: document\r\n" +
-                                "Accept-Encoding: gzip, deflate, br\r\n" +
-                                "Accept-Language: ja,en-US;q=0.9,en;q=0.8\r\n" +
-                                "\r\n" +
-                                "\r\n");
-                        writer.flush();
 
                         httpRequestSender = new HttpRequestSender(writer, httpRequestCatcher);
                         //httpRequestSender.getHeader().remove("Accept-Encoding");

@@ -11,7 +11,6 @@ public class Main {
     public static ServerSocket serverNotSSL;
     public static ServerSocket serverSSL;
     public static void main(String[] args) throws Exception {
-
         String key_password="omochi";
         String key_path="C:\\Users\\hirom\\key2.pfx";
         //String TrustPass="omochi";
@@ -40,5 +39,6 @@ public class Main {
         serverSSL.bind(new InetSocketAddress("localhost",18443));
         serverNotSSL=new ServerSocket(18080);
         ProxyCall.ProxyStart();
+
     }
 }
